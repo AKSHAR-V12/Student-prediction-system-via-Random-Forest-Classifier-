@@ -1,0 +1,511 @@
+# `index.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Next Edge AI</title>
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #050816;
+      color: white;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 0;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      color: #00ffcc;
+      text-shadow: 0 0 20px #00ffcc;
+    }
+
+    .hero p {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #c7c7c7;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 0 25px rgba(0,255,200,0.15);
+    }
+
+    .slider-group {
+      margin-bottom: 35px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      color: #e0e0e0;
+    }
+
+    .slider-container {
+      position: relative;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 14px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #00ffcc 50%, #444 50%);
+      outline: none;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0,255,200,0.4);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #00ffcc;
+      border: 3px solid white;
+      box-shadow: 0 0 20px #00ffcc;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .predict-btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(90deg, #00ffcc, #00bfff);
+      color: black;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: 0.3s;
+      box-shadow: 0 0 20px rgba(0,255,200,0.4);
+    }
+
+    .predict-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0,255,200,0.8);
+    }
+
+    .result-card {
+      margin-top: 40px;
+      padding: 25px;
+      border-radius: 25px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      display: none;
+    }
+
+    .result-card h2 {
+      color: #00ffcc;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      margin-top: 25px;
+      margin-bottom: 10px;
+      color: #00ffcc;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: #d5d5d5;
+    }
+
+    .developer {
+      margin-top: 60px;
+      text-align: center;
+      color: #bfbfbf;
+      line-height: 1.8;
+    }
+
+    .developer h2 {
+      color: #00ffcc;
+      margin-bottom: 15px;
+    }
+
+    @media(max-width:768px) {
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .glass-card {
+        padding: 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <canvas id="bg"></canvas>
+
+  <div class="container">
+
+    <div class="hero">
+      <h1>Next Edge AI</h1>
+      <p>
+        Futuristic Student Performance Prediction System<br>
+        Developed by Akshar Patel
+      </p>
+    </div>
+
+    <div class="glass-card">
+
+      <div id="sliders"></div>
+
+      <button class="predict-btn" onclick="predictStudent()">
+        Analyze Student Performance
+      </button>
+
+    </div>
+
+    <div class="result-card" id="resultCard">
+
+      <h2 id="resultText"></h2>
+
+      <p id="summary"></p>
+
+      <h3 class="section-title">Confidence</h3>
+      <p id="confidence"></p>
+
+      <h3 class="section-title">Performance Level</h3>
+      <p id="performance"></p>
+
+      <h3 class="section-title">Strengths</h3>
+      <ul id="strengths"></ul>
+
+      <h3 class="section-title">Weaknesses</h3>
+      <ul id="weaknesses"></ul>
+
+      <h3 class="section-title">Suggestions</h3>
+      <ul id="suggestions"></ul>
+
+    </div>
+
+    <div class="developer">
+
+      <h2>Developer</h2>
+
+      <p>
+        Akshar Patel<br>
+        Maharishi Vidya Mandir, Shahdol<br><br>
+
+        Passionate about Artificial Intelligence, Machine Learning,
+        Automation Systems, Backend Engineering, and futuristic AI products.
+      </p>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const features = [
+
+      {
+        key: 'study_hours',
+        label: 'Study Hours',
+        min: 0,
+        max: 12,
+        value: 6
+      },
+
+      {
+        key: 'attendance',
+        label: 'Attendance',
+        min: 0,
+        max: 100,
+        value: 80
+      },
+
+      {
+        key: 'assignments_completed',
+        label: 'Assignments Completed',
+        min: 0,
+        max: 10,
+        value: 7
+      },
+
+      {
+        key: 'sleep_hours',
+        label: 'Sleep Hours',
+        min: 0,
+        max: 12,
+        value: 7
+      },
+
+      {
+        key: 'screen_time',
+        label: 'Screen Time',
+        min: 0,
+        max: 15,
+        value: 4
+      },
+
+      {
+        key: 'mock_test_score',
+        label: 'Mock Test Score',
+        min: 0,
+        max: 100,
+        value: 70
+      },
+
+      {
+        key: 'motivation_level',
+        label: 'Motivation Level',
+        min: 0,
+        max: 10,
+        value: 8
+      },
+
+      {
+        key: 'internet_usage_hours',
+        label: 'Internet Usage Hours',
+        min: 0,
+        max: 15,
+        value: 5
+      }
+    ];
+
+
+    const slidersContainer = document.getElementById('sliders');
+
+
+    features.forEach(feature => {
+
+      const group = document.createElement('div');
+      group.className = 'slider-group';
+
+      group.innerHTML = `
+
+        <div class="slider-header">
+          <span>${feature.label}</span>
+          <span id="${feature.key}_value">${feature.value}</span>
+        </div>
+
+        <div class="slider-container">
+
+          <input
+            type="range"
+            id="${feature.key}"
+            min="${feature.min}"
+            max="${feature.max}"
+            value="${feature.value}"
+          />
+
+        </div>
+      `;
+
+      slidersContainer.appendChild(group);
+
+      const slider = document.getElementById(feature.key);
+
+      updateSlider(slider);
+
+      slider.addEventListener('input', () => {
+
+        document.getElementById(`${feature.key}_value`).innerText = slider.value;
+
+        updateSlider(slider);
+      });
+    });
+
+
+    function updateSlider(slider) {
+
+      const percentage =
+        ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+
+      slider.style.background =
+        `linear-gradient(90deg, #00ffcc ${percentage}%, #555 ${percentage}%)`;
+    }
+
+
+    async function predictStudent() {
+
+      const payload = {};
+
+      features.forEach(feature => {
+
+        payload[feature.key] = Number(
+          document.getElementById(feature.key).value
+        );
+      });
+
+      try {
+
+        const response = await fetch(
+          'http://127.0.0.1:8000/predict',
+
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify(payload)
+          }
+        );
+
+        const data = await response.json();
+
+        document.getElementById('resultCard').style.display = 'block';
+
+        document.getElementById('resultText').innerText = data.result;
+
+        document.getElementById('summary').innerText = data.summary;
+
+        document.getElementById('confidence').innerText =
+          data.confidence + '%';
+
+        document.getElementById('performance').innerText =
+          data.performance_level;
+
+        renderList('strengths', data.strengths);
+
+        renderList('weaknesses', data.weaknesses);
+
+        renderList('suggestions', data.suggestions);
+
+      } catch(error) {
+
+        alert('Backend connection failed. Make sure FastAPI is running.');
+
+        console.log(error);
+      }
+    }
+
+
+    function renderList(id, items) {
+
+      const list = document.getElementById(id);
+
+      list.innerHTML = '';
+
+      items.forEach(item => {
+
+        const li = document.createElement('li');
+
+        li.innerText = item;
+
+        list.appendChild(li);
+      });
+    }
+
+
+    // =========================
+    // PARTICLE BACKGROUND
+    // =========================
+
+    const canvas = document.getElementById('bg');
+
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    for(let i = 0; i < 100; i++) {
+
+      particles.push({
+
+        x: Math.random() * canvas.width,
+
+        y: Math.random() * canvas.height,
+
+        radius: Math.random() * 2,
+
+        dx: (Math.random() - 0.5),
+
+        dy: (Math.random() - 0.5)
+      });
+    }
+
+
+    function animateParticles() {
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+
+        ctx.beginPath();
+
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+
+        ctx.fillStyle = '#00ffcc';
+
+        ctx.fill();
+
+        p.x += p.dx;
+
+        p.y += p.dy;
+
+        if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
+
+        if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+
+      requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+
+  </script>
+
+</body>
+</html>
+```
