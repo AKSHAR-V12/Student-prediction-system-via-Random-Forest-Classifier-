@@ -1,2 +1,3 @@
-web: uvicorn student_project.api:app --host 0.0.0.0 --port $PORT
+uvicorn student_project.app:app --host 0.0.0.0 --port $PORT
+
 
