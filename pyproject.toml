@@ -1,0 +1,2 @@
+[tool.vercel]
+entrypoint = "student_project/api.py"
