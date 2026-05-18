@@ -4,6 +4,16 @@ import pandas as pd
 import joblib
 
 
+
+
+application = FastAPI()
+
+
+@app.get("/")
+def home():
+    return {"message": "Hello from FastAPI"}
+
+
 # =========================
 # Load Saved Model
 # =========================
@@ -32,12 +42,6 @@ feature_names = [
 # Create FastAPI App
 # =========================
 
-app = FastAPI()
-
-
-@app.get("/")
-def home():
-    return {"message": "Hello from FastAPI"}
 
 # =========================
 # Enable CORS
