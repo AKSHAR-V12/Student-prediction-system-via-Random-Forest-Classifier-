@@ -6,7 +6,7 @@ import joblib
 
 
 
-application = FastAPI()
+app = FastAPI()
 
 
 @app.get("/")
