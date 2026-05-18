@@ -14,11 +14,12 @@ def home():
     return {"message": "Hello from FastAPI"}
 
 
+
 # =========================
 # Load Saved Model
-# =========================
+# ========================
 
-model = joblib.load('student_model.pkl')
+model = joblib.load("student_model_compressed.pkl")
 
 
 # =========================
